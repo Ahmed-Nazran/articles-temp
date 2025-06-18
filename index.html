@@ -1,0 +1,377 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISTARC | Articles</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f2f5;
+      --text: #000;
+      --card: #fff;
+      --accent: #4267B2;
+    }
+    body.dark {
+      --bg: #18191a;
+      --text: #e4e6eb;
+      --card: #242526;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+      color: var(--text);
+    }
+
+    body.dark .topbar {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .left-section .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .center-section {
+      flex: 1;
+      margin: 0 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .center-section .search {
+      width: 100%;
+      max-width: 400px;
+      padding: 6px 14px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(5px);
+      font-size: 14px;
+      color: #333;
+    }
+    body.dark .center-section .search {
+      background: rgba(50, 50, 50, 0.6);
+      color: #eee;
+    }
+
+    .right-section button {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 18px;
+      margin-left: 15px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .right-section button:hover {
+      color: var(--accent);
+    }
+
+    .actions button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+    .articles {
+      flex: 3;
+      min-width: 300px;
+      margin-right: 20px;
+    }
+    .article {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 15px;
+      position: relative;
+    }
+    .left .profile {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .middle .name {
+      font-weight: bold;
+    }
+    .middle .info {
+      font-size: 12px;
+      color: gray;
+    }
+    .middle .title {
+      font-size: 18px;
+      font-weight: bold;
+      padding-top: 5px;
+      font-family: 'Playfair Display', serif;
+    }
+    .middle .content {
+      margin-top: 10px;
+      overflow: hidden;
+      position: relative;
+      max-height: 4.5em;
+      line-height: 1.5em;
+    }
+    .middle .content.expanded {
+      max-height: none;
+    }
+    .middle .content::after {
+      content: "... See more";
+      color: var(--accent);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--card);
+      cursor: pointer;
+    }
+    .middle .content.expanded::after {
+      content: "";
+      display: none;
+    }
+    .right .date {
+      font-size: 12px;
+      color: gray;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .ads {
+      flex: 1;
+      min-width: 200px;
+    }
+    .ad {
+      background: var(--card);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup form {
+      background: var(--card);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+    .popup input, .popup textarea {
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .popup label {
+      margin: 10px 0 5px;
+    }
+    .popup button {
+      padding: 10px;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      background: var(--accent);
+      color: white;
+    }
+    .hidden {
+      display: none;
+    }
+    .conditional input {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .ads {
+        margin-top: 20px;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+      }
+      .center-section {
+        width: 100%;
+        margin: 10px 0;
+      }
+      .right-section {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: gray;
+      font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="topbar glass">
+    <div class="left-section">
+      <div class="title">Articles</div>
+    </div>
+    <div class="center-section">
+      <input type="text" id="searchBox" class="search" placeholder="Search articles...">
+    </div>
+    <div class="right-section">
+      <button id="toggleMode" title="Toggle Dark/Light"><i class="fas fa-moon"></i></button>
+      <button id="publishBtn" title="Publish"><i class="fas fa-pen"></i></button>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <main class="articles" id="articlesContainer">
+      <!-- Articles will be loaded here -->
+      <div class="article">  
+        <div class="left">
+          <img src="assets/others/profile.png" class="profile" alt="profile">
+        </div>  
+        <div class="middle">    
+          <div class="name">Felix Catus</div>    
+          <div class="info">Meow Eng.</div>    
+          <div class="title">The Future of Meows</div>    
+          <div class="content handled">The meow of the meow is the great meow and the meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow and the meow of the meow is the meow of the meow. The meow which is known as the meow of the meow is the meow of the meow. But the meow of the meow is the meow of the meow. But the meow of the meow is the meow of the meow. And meow is not just a meow it is a meow of the meow. When a meow meows it is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The me who can meow is the real meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the me.</div>  
+        </div>  
+        <div class="right">
+          <div class="date">2025-06-04</div>
+        </div>
+      </div>
+
+      <div class="article">  
+        <div class="left">
+          <img src="assets/others/profile.png" class="profile" alt="profile">
+        </div>  
+        <div class="middle">    
+          <div class="name">Felix Catus</div>    
+          <div class="info">Meow Eng.</div>    
+          <div class="title">The Future of Meows</div>    
+          <div class="content handled">The meow of the meow is the great meow and the meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow and the meow of the meow is the meow of the meow. The meow which is known as the meow of the meow is the meow of the meow. But the meow of the meow is the meow of the meow. But the meow of the meow is the meow of the meow. And meow is not just a meow it is a meow of the meow. When a meow meows it is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The me who can meow is the real meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the meow. The meow of the meow is the meow of the me.</div>  
+        </div>  
+        <div class="right">
+          <div class="date">2025-06-04</div>
+        </div>
+      </div>
+      
+    </main>
+    <aside class="ads">
+      <div class="ad">Ad Space</div>
+    </aside>
+  </div>
+
+  <div id="loading" class="loading" style="display: none;">Loading more articles...</div>
+
+  <!-- Publish Form -->
+  <div id="popupForm" class="popup hidden">
+    <form>
+      <h2>Publish an Article</h2>
+      <input type="text" placeholder="Full Name" required="">
+      <input type="email" placeholder="Email" required="">
+      <input type="tel" placeholder="Phone Number" required="">
+      <input type="text" placeholder="Heading" required="">
+      <textarea placeholder="Write your article..." required=""></textarea>
+      <label>
+        <input type="checkbox" id="isStudent"> I am a student
+      </label>
+      <div id="studentFields" class="conditional hidden">
+        <input type="text" placeholder="Institution Name">
+        <input type="text" placeholder="Class">
+        <input type="text" placeholder="Roll No.">
+        <input type="text" placeholder="Section">
+      </div>
+      <div id="nonStudentFields" class="conditional">
+        <input type="text" placeholder="Your Info (e.g., Engineer, Teacher)">
+      </div>
+      <button type="submit">Submit</button>
+      <button type="button" id="closePopup">Cancel</button>
+    </form>
+  </div>
+
+</body>
+
+</html>
+
+<script src="scripts/script.js"></script>
+
+<script>
+
+  document.querySelectorAll('.content').forEach(content => {
+    if (content.scrollHeight > content.clientHeight) {
+      content.addEventListener('click', () => {
+        content.classList.toggle('expanded');
+      });
+    }
+  });
+  
+  document.getElementById("toggleMode").addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+  });
+
+  document.getElementById("publishBtn").addEventListener("click", () => {
+    document.getElementById("popupForm").classList.remove("hidden");
+  });
+
+  document.getElementById("closePopup").addEventListener("click", () => {
+    document.getElementById("popupForm").classList.add("hidden");
+  });
+
+  document.getElementById("isStudent").addEventListener("change", function() {
+    const studentFields = document.getElementById("studentFields");
+    const nonStudentFields = document.getElementById("nonStudentFields");
+    if (this.checked) {
+      studentFields.classList.remove("hidden");
+      nonStudentFields.classList.add("hidden");
+    } else {
+      studentFields.classList.add("hidden");
+      nonStudentFields.classList.remove("hidden");
+    }
+  });
+</script>
